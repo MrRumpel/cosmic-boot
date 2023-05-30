@@ -1,4 +1,3 @@
-
 import { LayoutProps } from 'ssr-types'
 import App from './App'
 
