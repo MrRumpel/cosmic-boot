@@ -13,5 +13,5 @@ const getToken = async (code) => {
 
 export default function Auth () {
   // const { state } = useContext<IContext<IData>>(useStoreContext())
-  return <div><ChildNode data={`auth${location.search}`}/></div>
+  return <div><ChildNode data={`auth${location.search}`} fn={() => console.info('auth')}/></div>
 }

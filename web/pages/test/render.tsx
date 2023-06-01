@@ -28,7 +28,7 @@ export default function Test () {
     <div>
       <Row>
         <Col span={4}>
-          <ChildNode data='test' />
+          <ChildNode data='test' fn={() => console.info('test')}/>
         </Col>
         <Col span={4}>
           <Input
