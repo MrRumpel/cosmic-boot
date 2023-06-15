@@ -1,8 +1,20 @@
-const mymodule = require('./mymodule')
+const http = require('http')
 const { argv } = process
-const dirPath = argv[2]
-const extname = argv[3]
-function cb (err, result) {
-  if (err) { console.error(err) } else { result.map(item => console.info(item)) }
+
+// 处理响应的回调函数
+var callback = function (response) {
+  // 不断更新数据
+  // var body = ''
+  response.setEncoding('utf8').on('data', function (data) {
+    // body += data
+    console.log(data)
+  })
+
+  // response.on('end', function () {
+  //   // 数据接收完成
+  //   console.log(body)
+  // })
 }
-mymodule(dirPath, extname, cb)
+// 向服务端发送请求
+var req = http.request(argv[2], callback)
+req.end()
