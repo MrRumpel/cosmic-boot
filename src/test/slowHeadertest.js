@@ -1,8 +1,8 @@
 const { argv } = process
 const method = argv[3] ? argv[3] : 'GET'
 const url = argv[3] ? argv[3] : argv[2]
-const net = require('net')
-const socket = net.connect({ port: 80 })
+const tls = require('tls')
+const socket = tls.connect({ host: url.split('/')[2], port: 443 })
 socket.write(`${method} ${url} HTTP/1.1\r\ncontent-length:1\r\n`)
 const start = Date.now()
 const timer = setInterval(() => {
@@ -10,6 +10,7 @@ const timer = setInterval(() => {
   console.info(`Test in process: ${sec}s`)
   if (sec > 11) {
     console.info('result: Slow HTTP headers vulnerability')
+    socket.write('1\r\n')
     clearInterval(timer)
   }
 }, 1000)
