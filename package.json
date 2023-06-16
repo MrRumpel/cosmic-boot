@@ -7,6 +7,7 @@
     "@nestjs/core": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
     "antd": "^5.5.1",
+    "bl": "^6.0.2",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
     "pm2": "^4.5.4",

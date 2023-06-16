@@ -1,20 +1,13 @@
 const http = require('http')
 const { argv } = process
 
-// 处理响应的回调函数
-var callback = function (response) {
-  // 不断更新数据
-  // var body = ''
-  response.setEncoding('utf8').on('data', function (data) {
-    // body += data
-    console.log(data)
+async function get (url) {
+  http.get(url, res => {
+    res.setEncoding('utf8')
+    let body = ''
+    res.on('data', (chunk) => { body += chunk })
+    res.on('end', () => console.info(body))
   })
-
-  // response.on('end', function () {
-  //   // 数据接收完成
-  //   console.log(body)
-  // })
 }
-// 向服务端发送请求
-var req = http.request(argv[2], callback)
-req.end()
+
+get(argv[2]).then(() => get(argv[3]).then(() => get(argv[4])))
