@@ -8,7 +8,7 @@ const start = Date.now()
 const timer = setInterval(() => {
   const sec = Math.round((Date.now() - start) / 1000)
   console.info(`Test in process: ${sec}s`)
-  if (sec > 11) {
+  if (sec > 10) {
     console.info('result: Slow HTTP headers vulnerability')
     socket.write('1\r\n')
     clearInterval(timer)
