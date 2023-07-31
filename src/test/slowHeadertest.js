@@ -10,8 +10,8 @@ const timer = setInterval(() => {
   console.info(`Test in process: ${sec}s`)
   if (sec > 10) {
     console.info('result: Slow HTTP headers vulnerability')
-    socket.write('1\r\n')
-    clearInterval(timer)
+    // socket.write('1\r\n')
+    // clearInterval(timer)
   }
 }, 1000)
 socket.on('end', () => {
