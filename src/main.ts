@@ -4,9 +4,11 @@ import { NestExpressApplication } from '@nestjs/platform-express'
 import { initialSSRDevProxy, loadConfig, getCwd } from 'ssr-common-utils'
 
 import { AppModule } from './app.module'
+import { ValidationPipe } from '@nestjs/common'
 
 async function bootstrap (): Promise<void> {
   const app = await NestFactory.create<NestExpressApplication>(AppModule)
+  app.useGlobalPipes(new ValidationPipe())
   await initialSSRDevProxy(app)
   app.useStaticAssets(join(getCwd(), './build'))
   app.useStaticAssets(join(getCwd(), './public'))
@@ -14,6 +16,7 @@ async function bootstrap (): Promise<void> {
   app.useStaticAssets(join(getCwd(), './public'))
   const { serverPort } = loadConfig()
   await app.listen(serverPort)
+  console.log(`Application is running on: ${await app.getUrl()}`)
 }
 
 bootstrap().catch(err => {

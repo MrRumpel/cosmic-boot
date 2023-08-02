@@ -1,0 +1,39 @@
+scalar Date
+
+type Query {
+  cats: [Cat]
+  cat(id: String!): Cat
+}
+
+type Mutation {
+  createCat(createCatInput: CreateCatInput): Cat
+}
+
+type Subscription {
+  catCreated: Cat
+}
+
+type Owner {
+  id: Int!
+  name: String!
+  age: Int
+  cats: [Cat!]
+}
+
+type Cat {
+  id: String
+  name: String
+  breed: String
+  age: Int
+  createdAt: Date
+  updatedAt: Date
+  owner: Owner
+}
+"""
+Test comment
+"""
+input CreateCatInput {
+  name: String
+  breed: String
+  age: Int
+}

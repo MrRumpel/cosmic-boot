@@ -28,6 +28,6 @@
   "include": [
     "src",
     "web"
-  ]
+, "generate-typings.ts"  ]
 }
 
