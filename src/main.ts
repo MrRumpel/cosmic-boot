@@ -1,13 +1,17 @@
 import { join } from 'path'
 import { NestFactory } from '@nestjs/core'
+import { MicroserviceOptions } from '@nestjs/microservices'
 import { NestExpressApplication } from '@nestjs/platform-express'
 import { initialSSRDevProxy, loadConfig, getCwd } from 'ssr-common-utils'
 
 import { AppModule } from './app.module'
 import { ValidationPipe } from '@nestjs/common'
+import { grpcClientOptions } from './grpc-client.options'
 
 async function bootstrap (): Promise<void> {
   const app = await NestFactory.create<NestExpressApplication>(AppModule)
+  app.connectMicroservice<MicroserviceOptions>(grpcClientOptions)
+  await app.startAllMicroservices()
   app.useGlobalPipes(new ValidationPipe())
   await initialSSRDevProxy(app)
   app.useStaticAssets(join(getCwd(), './build'))

@@ -11,7 +11,7 @@ export class DateScalar implements CustomScalar<string, Date> {
   }
 
   serialize (value: Date): string {
-    return moment(value).format('YYYY-MM-DD') // 使用moment格式化日期字符串
+    return moment(value).format('YYYY-MM-DD HH:mm:ss') // 使用moment格式化日期字符串
   }
 
   parseLiteral (ast: ValueNode): Date {

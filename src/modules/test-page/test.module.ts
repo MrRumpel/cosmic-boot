@@ -15,23 +15,41 @@ import { upperDirectiveTransformer } from '~/src/common/directives/upper-case.di
 import { OwnersService } from './owners.service'
 import { CatsResolver } from './cats.resolver'
 import { CatOwnerResolver } from './cat-owner.resolver'
-import { DateScalar, GraphQLISODateTimeScalar } from '~/src/common/scalars/date.scalar'
+import { DateScalar } from '~/src/common/scalars/date.scalar'
+import { HeroController } from './hero/hero.controller'
+import { ClientsModule } from '@nestjs/microservices'
+import { grpcClientOptions } from '../../grpc-client.options'
 
 @Module({
   imports: [
-  MongooseModule.forRoot("mongodb://nestJs:nestJs@localhost:27017/nestjs-mongodb"),
+  MongooseModule.forRoot(
+    "mongodb://nestJs:nestJs@localhost:27017/nestjs-mongodb"
+  ),
   MongooseModule.forFeature([{ name: Cat.name, schema: CatSchema }]),
   GraphQLModule.forRoot<ApolloDriverConfig>({
     driver: ApolloDriver,
-    typePaths: ['./**/*.graphql'],
-    transformSchema: schema => upperDirectiveTransformer(schema, 'upper'),
+    typePaths: ["./**/*.graphql"],
+    transformSchema: (schema) => upperDirectiveTransformer(schema, "upper"),
     installSubscriptionHandlers: true,
     buildSchemaOptions: {
-    dateScalarMode: 'timestamp',
-    }
+    dateScalarMode: "timestamp",
+    },
     }),
+  ClientsModule.register([
+    {
+    name: "HERO_PACKAGE",
+    ...grpcClientOptions,
+    },
+    ]),
   ],
-  controllers: [TestController, ApiController, CatsController],
-  providers: [ApiService, CatsService, OwnersService, CatsResolver, CatOwnerResolver, DateScalar],
+  controllers: [TestController, ApiController, CatsController, HeroController],
+  providers: [
+  ApiService,
+  CatsService,
+  OwnersService,
+  CatsResolver,
+  CatOwnerResolver,
+  DateScalar,
+  ],
   })
 export class TestModule {}
