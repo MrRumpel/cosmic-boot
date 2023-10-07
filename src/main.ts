@@ -7,10 +7,12 @@ import { initialSSRDevProxy, loadConfig, getCwd } from 'ssr-common-utils'
 import { AppModule } from './app.module'
 import { ValidationPipe } from '@nestjs/common'
 import { grpcClientOptions } from './grpc-client.options'
+import { redisClientOptions } from './redis.options'
 
 async function bootstrap (): Promise<void> {
   const app = await NestFactory.create<NestExpressApplication>(AppModule)
   app.connectMicroservice<MicroserviceOptions>(grpcClientOptions)
+  app.connectMicroservice<MicroserviceOptions>(redisClientOptions)
   await app.startAllMicroservices()
   app.useGlobalPipes(new ValidationPipe())
   await initialSSRDevProxy(app)
