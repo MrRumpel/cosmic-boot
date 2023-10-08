@@ -19,13 +19,19 @@ import { DateScalar } from '~/src/common/scalars/date.scalar'
 import { HeroController } from './hero/hero.controller'
 import { ClientsModule } from '@nestjs/microservices'
 import { grpcClientOptions } from '../../grpc-client.options'
+import { User, UserSchema } from './user/user.schema'
+import { UserController } from './user/user.controller'
+import { UserService } from './user/user.service'
 
 @Module({
   imports: [
   MongooseModule.forRoot(
     "mongodb://nestJs:nestJs@localhost:27017/nestjs-mongodb"
   ),
-  MongooseModule.forFeature([{ name: Cat.name, schema: CatSchema }]),
+  MongooseModule.forFeature([
+    { name: Cat.name, schema: CatSchema },
+    { name: User.name, schema: UserSchema },
+    ]),
   GraphQLModule.forRoot<ApolloDriverConfig>({
     driver: ApolloDriver,
     typePaths: ["./**/*.graphql"],
@@ -42,10 +48,11 @@ import { grpcClientOptions } from '../../grpc-client.options'
     },
     ]),
   ],
-  controllers: [TestController, ApiController, CatsController, HeroController],
+  controllers: [TestController, ApiController, CatsController, HeroController, UserController],
   providers: [
   ApiService,
   CatsService,
+  UserService,
   OwnersService,
   CatsResolver,
   CatOwnerResolver,
