@@ -8,9 +8,15 @@ import { AppModule } from './app.module'
 import { ValidationPipe } from '@nestjs/common'
 import { grpcClientOptions } from './grpc-client.options'
 import { redisClientOptions } from './redis.options'
+import { TransformInterceptor } from './core/interceptor/transform/transform.interceptor'
+import { HttpExceptionFilter } from './core/filter/http-exception/http-exception.filter'
 
 async function bootstrap (): Promise<void> {
   const app = await NestFactory.create<NestExpressApplication>(AppModule)
+  // 注册全局错误的过滤器
+  app.useGlobalFilters(new HttpExceptionFilter())
+  // 注册全局注册的拦截器
+  app.useGlobalInterceptors(new TransformInterceptor())
   app.connectMicroservice<MicroserviceOptions>(grpcClientOptions)
   app.connectMicroservice<MicroserviceOptions>(redisClientOptions)
   await app.startAllMicroservices()
