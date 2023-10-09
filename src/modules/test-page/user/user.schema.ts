@@ -30,7 +30,7 @@ export class User {
   @Prop()
   email: string;
 
-  @Prop({type: String, enum: UserRole})
+  @Prop({ type: String, enum: UserRole })
   role: string; // 用户角色
 
   @Prop({ default: Date.now })
@@ -39,6 +39,8 @@ export class User {
   @Prop({ default: Date.now })
   updatedAt: Date;
 
+  // 隐藏的字段可以在这里定义
+  static hiddenFields = ['password'];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User)

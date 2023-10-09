@@ -14,6 +14,11 @@ export class UserService {
     @InjectModel(User.name) private readonly UserModel: Model<UserDocument>
   ) {}
 
+  async findUserById (userId: string): Promise<User> {
+    const user = await this.UserModel.findById(userId).select('-' + User.hiddenFields.join(' ')).exec()
+    return user
+  }
+
   async create (createUser: User): Promise<User> {
     const { username } = createUser
 
@@ -23,7 +28,7 @@ export class UserService {
       throw new HttpException('用户名已存在', HttpStatus.BAD_REQUEST)
     }
 
-    const newUser = new this.UserModel(createUser)
-    return await newUser.save()
+    const newUser = new this.UserModel(createUser).save()
+    return await this.findUserById((await newUser).id)
   }
 }
