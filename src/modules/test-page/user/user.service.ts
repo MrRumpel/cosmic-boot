@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common'
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException
+} from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { User, UserDocument } from './user.schema'
@@ -12,9 +17,7 @@ export class UserService {
   async create (createUser: User): Promise<User> {
     const { username } = createUser
 
-    const existUser = await this.UserModel.findOne({
-      where: { username }
-    })
+    const existUser = await this.UserModel.findOne({ username }).exec()
 
     if (existUser) {
       throw new HttpException('用户名已存在', HttpStatus.BAD_REQUEST)
