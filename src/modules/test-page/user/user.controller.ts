@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Delete, Param, Put, Patch, HttpCode } from '@nestjs/common'
+import { Controller, Get, Post, Body, Delete, Param, Put, Patch, HttpCode, ValidationPipe } from '@nestjs/common'
 import { User } from './user.schema'
 import { UserService } from './user.service'
 
@@ -8,7 +8,7 @@ export class UserController {
 
   @Post('register')
   @HttpCode(201)
-  async create (@Body() userData: User): Promise<User> {
+  async create (@Body(new ValidationPipe()) userData: User): Promise<User> {
     return await this.UserService.create(userData)
   }
 }

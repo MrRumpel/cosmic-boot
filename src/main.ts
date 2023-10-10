@@ -13,6 +13,8 @@ import { HttpExceptionFilter } from './core/filter/http-exception/http-exception
 
 async function bootstrap (): Promise<void> {
   const app = await NestFactory.create<NestExpressApplication>(AppModule)
+  // 注册全局注册的验证
+  app.useGlobalPipes(new ValidationPipe())
   // 注册全局错误的过滤器
   app.useGlobalFilters(new HttpExceptionFilter())
   // 注册全局注册的拦截器
@@ -20,7 +22,6 @@ async function bootstrap (): Promise<void> {
   app.connectMicroservice<MicroserviceOptions>(grpcClientOptions)
   app.connectMicroservice<MicroserviceOptions>(redisClientOptions)
   await app.startAllMicroservices()
-  app.useGlobalPipes(new ValidationPipe())
   await initialSSRDevProxy(app)
   app.useStaticAssets(join(getCwd(), './build'))
   app.useStaticAssets(join(getCwd(), './public'))
