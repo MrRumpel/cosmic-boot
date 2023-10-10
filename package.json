@@ -13,6 +13,7 @@
     "@nestjs/microservices": "^10.2.1",
     "@nestjs/mongoose": "^10.0.1",
     "@nestjs/platform-express": "^10.0.0",
+    "@nestjs/swagger": "^7.1.13",
     "antd": "^5.5.1",
     "bcryptjs": "^2.4.3",
     "bl": "^6.0.2",
@@ -31,7 +32,8 @@
     "reflect-metadata": "^0.1.13",
     "sort-by": "^1.2.0",
     "ssr-common-utils": "^6.0.0",
-    "ssr-core": "^6.0.0"
+    "ssr-core": "^6.0.0",
+    "swagger-ui-express": "^5.0.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
