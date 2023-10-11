@@ -37,10 +37,10 @@ export class User {
   role: string; // 用户角色
 
   @Prop({ default: Date.now })
-  createdAt: Date;
+  createdTime: Date;
 
   @Prop({ default: Date.now })
-  updatedAt: Date;
+  updatedTime: Date;
 
   // 隐藏的字段可以在这里定义
   static hiddenFields = ['password'];
