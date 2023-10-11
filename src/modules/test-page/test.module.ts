@@ -22,9 +22,19 @@ import { grpcClientOptions } from '../../grpc-client.options'
 import { User, UserSchema } from './user/user.schema'
 import { UserController } from './user/user.controller'
 import { UserService } from './user/user.service'
+import { LocalStorage } from './user/local.strategy'
+import { PassportModule } from '@nestjs/passport'
+import { JwtModule } from '@nestjs/jwt'
+import { ConfigService } from '@nestjs/config'
+
+const jwtModule = JwtModule.register({
+  secret: 'test123456',
+  signOptions: { expiresIn: '4h' }
+})
 
 @Module({
   imports: [
+  jwtModule,
   MongooseModule.forRoot(
     "mongodb://nestJs:nestJs@localhost:27017/nestjs-mongodb"
   ),
@@ -47,6 +57,7 @@ import { UserService } from './user/user.service'
     ...grpcClientOptions,
     },
     ]),
+  PassportModule,
   ],
   controllers: [TestController, ApiController, CatsController, HeroController, UserController],
   providers: [
@@ -57,6 +68,8 @@ import { UserService } from './user/user.service'
   CatsResolver,
   CatOwnerResolver,
   DateScalar,
+  LocalStorage
   ],
+  exports: [jwtModule]
   })
 export class TestModule {}
