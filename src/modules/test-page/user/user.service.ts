@@ -19,6 +19,11 @@ export class UserService {
     return user
   }
 
+  async getUser (userInfo: User): Promise<User> {
+    const user = await this.UserModel.findOne({ username: userInfo.username }).select('-' + User.hiddenFields.join(' ')).exec()
+    return user
+  }
+
   async create (createUser: User): Promise<User> {
     const { username } = createUser
 

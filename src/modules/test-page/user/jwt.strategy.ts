@@ -1,15 +1,17 @@
-import { UnauthorizedException } from '@nestjs/common'
+import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { PassportStrategy } from '@nestjs/passport'
 import { StrategyOptions, Strategy, ExtractJwt } from 'passport-jwt'
 import { User } from './user.schema'
 import { UserService } from './user.service'
+@Injectable()
 export class JwtStorage extends PassportStrategy(Strategy) {
-  constructor (private readonly UserService: UserService) {
-    super({ jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), secretOrKey: 'test123456' })
+
+  constructor (private readonly userService: UserService) {
+    super({ jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), secretOrKey: 'test123456' } as StrategyOptions)
   }
 
   async validate (user: User) {
-    const existUser = await this.UserService.getUser(user)
+    const existUser = await this.userService.getUser(user)
     if (!existUser) {
       throw new UnauthorizedException('token不正确')
     }

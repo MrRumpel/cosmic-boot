@@ -16,6 +16,7 @@ import {
 } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { AuthGuard } from '@nestjs/passport'
+import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger'
 import { User } from './user.schema'
 import { UserService } from './user.service'
 
@@ -46,4 +47,11 @@ export class UserController {
     return token
   }
 
+  @ApiOperation({ summary: '获取用户信息' })
+  @ApiBearerAuth() // swagger文档设置token
+  @UseGuards(AuthGuard('jwt'))
+  @Get('getUserInfo')
+  getUserInfo (@Req() req) {
+    return req.user
+  }
 }
