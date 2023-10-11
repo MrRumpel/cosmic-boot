@@ -26,6 +26,7 @@ import { LocalStorage } from './user/local.strategy'
 import { PassportModule } from '@nestjs/passport'
 import { JwtModule } from '@nestjs/jwt'
 import { ConfigService } from '@nestjs/config'
+import { JwtStorage } from './user/jwt.strategy'
 
 const jwtModule = JwtModule.register({
   secret: 'test123456',
@@ -68,7 +69,8 @@ const jwtModule = JwtModule.register({
   CatsResolver,
   CatOwnerResolver,
   DateScalar,
-  LocalStorage
+  LocalStorage,
+  JwtStorage
   ],
   exports: [jwtModule]
   })
