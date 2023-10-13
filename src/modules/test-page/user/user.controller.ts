@@ -17,12 +17,17 @@ import {
 import { JwtService } from '@nestjs/jwt'
 import { AuthGuard } from '@nestjs/passport'
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger'
+import { Roles, RolesGuard } from './role.guard'
 import { User } from './user.schema'
 import { UserService } from './user.service'
 
 @Controller("user")
 export class UserController {
-  constructor (private readonly jwtService: JwtService, private readonly UserService: UserService) {}
+  constructor (
+    private readonly jwtService: JwtService,
+    private readonly UserService: UserService
+  ) {}
+
   // 生成token
   createToken (user: Partial<User>) {
     return this.jwtService.sign(user)
@@ -47,11 +52,19 @@ export class UserController {
     return token
   }
 
-  @ApiOperation({ summary: '获取用户信息' })
+  @ApiOperation({ summary: "获取用户信息" })
   @ApiBearerAuth() // swagger文档设置token
-  @UseGuards(AuthGuard('jwt'))
-  @Get('getUserInfo')
+  @UseGuards(AuthGuard("jwt"))
+  @Get("getUserInfo")
   getUserInfo (@Req() req) {
+    return req.user
+  }
+
+  @ApiBearerAuth()
+  @Get('testRole')
+  @Roles("admin", "root")
+  @UseGuards(AuthGuard("jwt"), RolesGuard)
+  testUserRole (@Req() req) {
     return req.user
   }
 }

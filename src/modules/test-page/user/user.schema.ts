@@ -7,6 +7,8 @@ export type UserDocument = User & Document
 
 enum UserRole {
   ROOT = 'root',
+  ADMIN = 'admin',
+  USER = 'user',
   AUTHOR = 'author',
   VISITOR = 'visitor',
 }
