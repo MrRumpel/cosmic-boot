@@ -17,7 +17,7 @@ export class User {
   name: string;
 
   @IsNotEmpty({ message: "用户名必填" })
-  @Length(6, 20, { message: "用户名长度6-20位" })
+  @Length(3, 20, { message: "用户名长度3-20位" })
   @Prop({ required: true })
   username: string;
 
