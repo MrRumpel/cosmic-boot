@@ -12,11 +12,18 @@ import {
   ClassSerializerInterceptor,
   Req,
   UseGuards,
-  UseInterceptors
+  UseInterceptors,
+  UploadedFile
 } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { AuthGuard } from '@nestjs/passport'
-import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger'
+import { FileInterceptor } from '@nestjs/platform-express'
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiOperation
+} from '@nestjs/swagger'
 import { Roles, RolesGuard } from './role.guard'
 import { User } from './user.schema'
 import { UserService } from './user.service'
@@ -61,10 +68,29 @@ export class UserController {
   }
 
   @ApiBearerAuth()
-  @Get('testRole')
+  @Get("testRole")
   @Roles("admin", "root")
   @UseGuards(AuthGuard("jwt"), RolesGuard)
   testUserRole (@Req() req) {
     return req.user
+  }
+
+  @Post("upload")
+  @ApiOperation({ summary: "上传文件" })
+  @ApiConsumes("multipart/form-data")
+  @UseInterceptors(FileInterceptor("file"))
+  @ApiBody({
+    schema: {
+    type: "object",
+    properties: {
+    file: {
+    type: "string",
+    format: "binary",
+    },
+    },
+    },
+    })
+  uploadFile (@UploadedFile("file") file: Express.Multer.File) {
+    console.info(file)
   }
 }
