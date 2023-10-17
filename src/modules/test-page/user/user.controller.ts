@@ -1,3 +1,4 @@
+import { message } from 'antd'
 import {
   Controller,
   Get,
@@ -27,7 +28,7 @@ import {
 import { Roles, RolesGuard } from './role.guard'
 import { User } from './user.schema'
 import { UserService } from './user.service'
-
+import fs from 'fs'
 @Controller("user")
 export class UserController {
   constructor (
@@ -90,7 +91,16 @@ export class UserController {
     },
     },
     })
-  uploadFile (@UploadedFile("file") file: Express.Multer.File) {
+  async uploadFile (@UploadedFile("file") file: Express.Multer.File) {
     console.info(file)
+    await fs.writeFile('dist/' + file.originalname, file.buffer, 'utf8', error => {
+      if (error) {
+        throw new Error('写入文件出错：' + error.message)
+      } else {
+        console.log('文件写入成功\n')
+        console.log('The written has the following contents:')
+        console.log(fs.readFileSync('dist/' + file.originalname, 'utf8'))
+      }
+    })
   }
 }
